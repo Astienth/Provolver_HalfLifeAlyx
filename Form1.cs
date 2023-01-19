@@ -136,6 +136,7 @@ namespace Provolver_HalfLifeAlyx
                 this.btnStop.Enabled = true;
                 this.btnBrowse.Enabled = false;
                 this.engine = new Engine();
+                this.engine.initSyncAsync();
                 this.WriteTextSafe("Starting...");
                 this.parsingMode = true;
                 new Thread(new ThreadStart(this.ParseConsole)).Start();
