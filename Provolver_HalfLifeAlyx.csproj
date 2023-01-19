@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
       <HintPath>lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\protube.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

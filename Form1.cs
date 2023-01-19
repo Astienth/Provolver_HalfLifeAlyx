@@ -196,7 +196,7 @@ namespace Provolver_HalfLifeAlyx
             ((ISupportInitialize)this.pictureBox1).BeginInit();
             this.SuspendLayout();
             this.pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            this.pictureBox1.Image = (Image)componentResourceManager.GetObject("protube");
+            //this.pictureBox1.Image = (Image)componentResourceManager.GetObject("protube");
             this.pictureBox1.Location = new Point(125, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new Size(191, 50);
@@ -267,7 +267,7 @@ namespace Provolver_HalfLifeAlyx
             this.Controls.Add((Control)this.btnStop);
             this.Controls.Add((Control)this.btnStart);
             this.Controls.Add((Control)this.pictureBox1);
-            this.Icon = (Icon)componentResourceManager.GetObject("favicon");
+            //this.Icon = (Icon)componentResourceManager.GetObject("favicon");
             this.MaximumSize = new Size(479, 412);
             this.MinimumSize = new Size(479, 412);
             this.Name = nameof(Form1);
