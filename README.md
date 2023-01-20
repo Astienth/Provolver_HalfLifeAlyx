@@ -19,7 +19,8 @@ You need to add -condebug to your Half-Life Alyx launch options like this:
 
 Launch the Provolver_HalfLifeAlyx.exe from the provolver folder.
 Turn you provolver on.
-After few seconds, it will vibrate, acknowlodging you that it is connected.
+Click on the start button in the application.
+After a few seconds, the provolver will vibrate, acknowledging you that it is connected.
 You can launch the game.
 
 ## CREDITS
