@@ -7,10 +7,10 @@ namespace Provolver_HalfLifeAlyx
     public class Engine
       {
         public bool menuOpen;
+        private int grenadeLauncherState;
 
         public async Task initSyncAsync()
         {
-            Debug.WriteLine("Initializing ProTube gear...");
             await ForceTubeVRInterface.InitAsync(true);
             Thread.Sleep(10000);
         }
@@ -26,7 +26,7 @@ namespace Provolver_HalfLifeAlyx
                 ForceTubeVRInterface.Kick(255, ForceTubeVRChannel.pistol1);
                 break;
             case "hlvr_weapon_shotgun":
-                ForceTubeVRInterface.Shoot(210, 255, 200f, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Shoot(210, 255, 65f, ForceTubeVRChannel.pistol1);
                 break;
             default:
                 ForceTubeVRInterface.Kick(210, ForceTubeVRChannel.pistol1);
@@ -36,12 +36,21 @@ namespace Provolver_HalfLifeAlyx
 
         public void ClipInserted()
         {
-
+            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.pistol1);
         }
 
         public void ChamberedRound()
         {
+            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.pistol1);
+        }
 
+        public void GrenadeLauncherStateChange(int newState)
+        {
+            if (this.grenadeLauncherState == 2 && newState == 0)
+            {
+                ForceTubeVRInterface.Shoot(180, 126, 50f, ForceTubeVRChannel.pistol1);
+            }
+            this.grenadeLauncherState = newState;
         }
     }
 }

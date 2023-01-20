@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Provolver_HalfLifeAlyx.Properties {
+namespace Provolver_HalfLifeAlyx.Properties
+{
     using System;
     
     

@@ -19,11 +19,7 @@ namespace Provolver_HalfLifeAlyx
         private IContainer components;
         private PictureBox pictureBox1;
         private Button btnStart;
-        private Button btnStop;
         private Label lblInfo;
-        private TextBox txtAlyxDirectory;
-        private Button btnBrowse;
-        private Label label1;
         private Label label2;
 
         public Form1() => this.InitializeComponent();
@@ -46,7 +42,7 @@ namespace Provolver_HalfLifeAlyx
             if (this.lblInfo.InvokeRequired)
                 this.lblInfo.Invoke((Delegate)new Form1.SafeCallDelegate(this.WriteTextSafe), (object)text);
             else
-                this.lblInfo.Text = text;
+                this.lblInfo.Text = "Status: " + text;
         }
 
         private void ParseLine(string line)
@@ -64,6 +60,11 @@ namespace Provolver_HalfLifeAlyx
                     this.engine.ClipInserted();
                 else if (str1 == "PlayerPistolChamberedRound" || str1 == "PlayerShotgunLoadedShells" || str1 == "PlayerRapidfireClosedCasing" || str1 == "PlayerRapidfireOpenedCasing")
                     this.engine.ChamberedRound();
+                else if (str1 == "PlayerShotgunUpgradeGrenadeLauncherState")
+                {
+                    if (strArray.Length > 1)
+                        this.engine.GrenadeLauncherStateChange(int.Parse(strArray[1].Trim()));
+                }
             }
             this.WriteTextSafe(line);
             GC.Collect();
@@ -71,7 +72,7 @@ namespace Provolver_HalfLifeAlyx
 
         private void ParseConsole()
         {
-            string path = this.txtAlyxDirectory.Text + "\\game\\hlvr\\console.log";
+            string path = "..\\game\\hlvr\\console.log";
             bool flag = true;
             int count = 0;
             while (this.parsingMode)
@@ -118,63 +119,35 @@ namespace Provolver_HalfLifeAlyx
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(this.txtAlyxDirectory.Text + "\\game\\bin\\win64\\hlvr.exe"))
+            if (!File.Exists("..\\game\\bin\\win64\\hlvr.exe"))
             {
-                int num1 = (int)MessageBox.Show("Please select your Half-Life Alyx installation folder correctly first.", "Error Starting", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                int num1 = (int)MessageBox.Show("Mod was not extracted in the correct folder", "Error Starting", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
-            else if (!File.Exists(this.txtAlyxDirectory.Text + "\\game\\hlvr\\scripts\\vscripts\\tactsuit.lua"))
+            else if (!File.Exists("..\\game\\hlvr\\scripts\\vscripts\\tactsuit.lua"))
             {
                 int num2 = (int)MessageBox.Show("Script file installation is not correct. Please read the instructions on the mod page and reinstall.", "Script Installation Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
-            else if (!File.ReadAllText(this.txtAlyxDirectory.Text + "\\game\\hlvr\\cfg\\skill_manifest.cfg").Contains("script_reload_code tactsuit.lua"))
+            else if (!File.ReadAllText("..\\game\\hlvr\\cfg\\skill_manifest.cfg").Contains("script_reload_code tactsuit.lua"))
             {
                 int num3 = (int)MessageBox.Show("skill_manifest.cfg file installation is not correct. Please read the instructions on the mod page and reinstall.", "Script Installation Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
             else
             {
                 this.btnStart.Enabled = false;
-                this.btnStop.Enabled = true;
-                this.btnBrowse.Enabled = false;
                 this.engine = new Engine();
                 this.engine.initSyncAsync();
-                this.WriteTextSafe("Starting...");
+                this.WriteTextSafe("Initializing Provolver and starting...");
                 this.parsingMode = true;
                 new Thread(new ThreadStart(this.ParseConsole)).Start();
             }
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            this.btnStart.Enabled = true;
-            this.btnStop.Enabled = false;
-            this.btnBrowse.Enabled = true;
-            this.parsingMode = false;
-            this.WriteTextSafe("Stopping...");
-        }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
-            commonOpenFileDialog.InitialDirectory = "C:\\";
-            commonOpenFileDialog.RestoreDirectory = true;
-            commonOpenFileDialog.IsFolderPicker = true;
-            if (commonOpenFileDialog.ShowDialog() != CommonFileDialogResult.Ok)
-                return;
-            this.txtAlyxDirectory.Text = commonOpenFileDialog.FileName;
-            Settings.Default.AlyxDirectory = this.txtAlyxDirectory.Text;
-            Settings.Default.Save();
-        }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.btnStart.Enabled = true;
-            this.btnStop.Enabled = false;
-            this.btnBrowse.Enabled = true;
             this.parsingMode = false;
             this.WriteTextSafe("Stopping...");
         }
-
-        private void Form1_Load(object sender, EventArgs e) => this.txtAlyxDirectory.Text = Settings.Default.AlyxDirectory;
 
         protected override void Dispose(bool disposing)
         {
@@ -188,93 +161,56 @@ namespace Provolver_HalfLifeAlyx
             ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new PictureBox();
             this.btnStart = new Button();
-            this.btnStop = new Button();
             this.lblInfo = new Label();
-            this.txtAlyxDirectory = new TextBox();
-            this.btnBrowse = new Button();
-            this.label1 = new Label();
             this.label2 = new Label();
             ((ISupportInitialize)this.pictureBox1).BeginInit();
             this.SuspendLayout();
             this.pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            //this.pictureBox1.Image = (Image)componentResourceManager.GetObject("protube");
-            this.pictureBox1.Location = new Point(125, 12);
+            this.pictureBox1.Image = Resources.protube;
+            this.pictureBox1.Location = new Point(145, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new Size(191, 50);
+            this.pictureBox1.Size = new Size(160, 160);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             this.btnStart.Font = new Font("Microsoft Sans Serif", 20f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.btnStart.Location = new Point(29, 88);
+            this.btnStart.Location = new Point(135, 200);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new Size(188, 61);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new EventHandler(this.btnStart_Click);
-            this.btnStop.Enabled = false;
-            this.btnStop.Font = new Font("Microsoft Sans Serif", 20f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.btnStop.Location = new Point(245, 88);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new Size(188, 61);
-            this.btnStop.TabIndex = 2;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new EventHandler(this.btnStop_Click);
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new Font("Microsoft Sans Serif", 12f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.lblInfo.Location = new Point(25, 342);
+            this.lblInfo.Location = new Point(25, 335);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new Size(74, 20);
             this.lblInfo.TabIndex = 3;
-            this.lblInfo.Text = "Waiting...";
-            this.txtAlyxDirectory.Enabled = false;
-            this.txtAlyxDirectory.Font = new Font("Microsoft Sans Serif", 10f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.txtAlyxDirectory.Location = new Point(29, (int)byte.MaxValue);
-            this.txtAlyxDirectory.Name = "txtAlyxDirectory";
-            this.txtAlyxDirectory.Size = new Size(323, 23);
-            this.txtAlyxDirectory.TabIndex = 4;
-            this.txtAlyxDirectory.Text = "C:\\Steam\\steamapps\\common\\Half-Life Alyx";
-            this.btnBrowse.Location = new Point(358, (int)byte.MaxValue);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new Size(75, 23);
-            this.btnBrowse.TabIndex = 5;
-            this.btnBrowse.Text = "Browse...";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new EventHandler(this.btnBrowse_Click);
-            this.label1.AutoSize = true;
-            this.label1.Font = new Font("Microsoft Sans Serif", 12f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.label1.Location = new Point(25, 232);
-            this.label1.Name = "label1";
-            this.label1.Size = new Size(276, 20);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Select Your Half-Life Alyx install folder";
+            this.lblInfo.Text = "Status: Waiting...";
             this.label2.AutoSize = true;
             this.label2.Font = new Font("Microsoft Sans Serif", 12f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.label2.Location = new Point(25, 304);
+            this.label2.Location = new Point(25, 270);
             this.label2.Name = "label2";
             this.label2.Size = new Size(421, 20);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Make sure you run the game with launch option -condebug";
-            this.AutoScaleDimensions = new SizeF(6f, 13f);
+            this.label2.Text = "Make sure you run the game with launch" + Environment.NewLine + " option -condebug";
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.AutoScaleDimensions = new SizeF(8f, 18f);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.BackColor = SystemColors.ControlDarkDark;
+            this.BackColor = SystemColors.ControlDark;
             this.ClientSize = new Size(463, 373);
             this.Controls.Add((Control)this.label2);
-            this.Controls.Add((Control)this.label1);
-            this.Controls.Add((Control)this.btnBrowse);
-            this.Controls.Add((Control)this.txtAlyxDirectory);
             this.Controls.Add((Control)this.lblInfo);
-            this.Controls.Add((Control)this.btnStop);
             this.Controls.Add((Control)this.btnStart);
             this.Controls.Add((Control)this.pictureBox1);
-            //this.Icon = (Icon)componentResourceManager.GetObject("favicon");
+            this.Icon = Resources.favicon;
             this.MaximumSize = new Size(479, 412);
             this.MinimumSize = new Size(479, 412);
             this.Name = nameof(Form1);
-            this.Text = "Provolver Tactsuit Alyx Interface";
+            this.Text = "Provolver Alyx Interface";
             this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new EventHandler(this.Form1_Load);
             ((ISupportInitialize)this.pictureBox1).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -20,52 +20,52 @@ namespace Provolver_HalfLifeAlyx
 
     public class ForceTubeVRInterface
     {
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "InitRifle")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "InitRifle")]
         private static extern void InitRifle_x64();
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "InitPistol")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "InitPistol")]
         private static extern void InitPistol_x64();
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "SetActive")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "SetActive")]
         private static extern void SetActiveResearch_x64(bool active);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "KickChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "KickChannel")]
         private static extern void Kick_x64(Byte power, ForceTubeVRChannel channel);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "RumbleChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "RumbleChannel")]
         private static extern void Rumble_x64(Byte power, float timeInSeconds, ForceTubeVRChannel channel);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "ShotChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "ShotChannel")]
         private static extern void Shot_x64(Byte kickPower, Byte rumblePower, float rumbleDuration, ForceTubeVRChannel channel);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "TempoToKickPower")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "TempoToKickPower")]
         private static extern Byte TempoToKickPower_x64(float tempo);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "GetBatteryLevel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "GetBatteryLevel")]
         private static extern Byte GetBatteryLevel_x64();
 
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "ListConnectedForceTube")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "ListConnectedForceTube")]
         [return: MarshalAs(UnmanagedType.LPStr)]
         private static extern string ListConnectedForceTube_x64();
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "ListChannels")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "ListChannels")]
         [return: MarshalAs(UnmanagedType.LPStr)]
         private static extern string ListChannels_x64();
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "InitChannels")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "InitChannels")]
         private static extern bool InitChannels_x64([MarshalAs(UnmanagedType.LPStr)] string sJsonChannelList);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "AddToChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "AddToChannel")]
         private static extern bool AddToChannel_x64(int nChannel, [MarshalAs(UnmanagedType.LPStr)] string sName);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "RemoveFromChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "RemoveFromChannel")]
         private static extern bool RemoveFromChannel_x64(int nChannel, [MarshalAs(UnmanagedType.LPStr)] string sName);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "ClearChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "ClearChannel")]
         private static extern void ClearChannel_x64(int nChannel);
 
-        [DllImport("UserLibs\\ForceTubeVR_API_x64", EntryPoint = "ClearAllChannel")]
+        [DllImport("ForceTubeVR_API_x64", EntryPoint = "ClearAllChannel")]
         private static extern void ClearAllChannel_x64();
 
 
@@ -164,7 +164,6 @@ namespace Provolver_HalfLifeAlyx
         {
             string path = Application.ExecutablePath;
             string filePath = path + "/Channels.json";
-            Debug.WriteLine("filePath : " + filePath);
             string dataAsJson = File.ReadAllText(filePath);
             return ForceTubeVRInterface.InitChannels(dataAsJson);
         }
@@ -174,7 +173,6 @@ namespace Provolver_HalfLifeAlyx
             string sText = ForceTubeVRInterface.ListChannels();
             string path = Application.ExecutablePath;
             string filePath = path + "/ProTubeChannels.json";
-            Debug.WriteLine("filePath : " + filePath);
             File.WriteAllText(filePath, sText);
             return true;
         }
