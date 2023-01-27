@@ -20,35 +20,35 @@ namespace Provolver_HalfLifeAlyx
           switch (weapon)
           {
             case "hlvr_weapon_energygun":
-                ForceTubeVRInterface.Kick(210, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Kick(210, ForceTubeVRChannel.all);
                 break;
             case "hlvr_weapon_rapidfire":
-                ForceTubeVRInterface.Kick(255, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Kick(255, ForceTubeVRChannel.all);
                 break;
             case "hlvr_weapon_shotgun":
-                ForceTubeVRInterface.Shoot(210, 255, 65f, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Shoot(210, 255, 65f, ForceTubeVRChannel.all);
                 break;
             default:
-                ForceTubeVRInterface.Kick(210, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Kick(210, ForceTubeVRChannel.all);
                 break;
           }
         }
 
         public void ClipInserted()
         {
-            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.pistol1);
+            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.all);
         }
 
         public void ChamberedRound()
         {
-            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.pistol1);
+            ForceTubeVRInterface.Rumble(85, 20f, ForceTubeVRChannel.all);
         }
 
         public void GrenadeLauncherStateChange(int newState)
         {
             if (this.grenadeLauncherState == 2 && newState == 0)
             {
-                ForceTubeVRInterface.Shoot(180, 126, 50f, ForceTubeVRChannel.pistol1);
+                ForceTubeVRInterface.Shoot(180, 126, 50f, ForceTubeVRChannel.all);
             }
             this.grenadeLauncherState = newState;
         }
