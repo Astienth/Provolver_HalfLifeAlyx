@@ -4,6 +4,8 @@
 
 Provolver integration mod for Half-Life Alyx. Many different haptic effects for each weapons, reloading and upgrades.
 
+☕ If you wanna show some support you can buy me a coffee : https://www.buymeacoffee.com/astienth4
+
 
 ## INSTALLATION
 Extract the contents of the Provolver.zip file inside your “Steam\steamapps\common\Half-Life Alyx” directory.
